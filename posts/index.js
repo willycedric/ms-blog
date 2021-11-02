@@ -23,7 +23,7 @@ app.post("/posts", async (req, res) => {
     title,
   };
 
-  await axios.post("http://localhost:4005/events", {
+  await axios.post("http://event-bus-svc:4005/events", {
     type: "PostCreated",
     data: {
       id,
@@ -33,7 +33,9 @@ app.post("/posts", async (req, res) => {
 
   res.status(201).send(posts[id]);
 });
-
+app.get("/posts/health-check", (req, res)=>{
+  res.send({status:"healthy"});
+});
 app.post("/events", (req, res) => {
   console.log("Received Event", req.body.type);
 
@@ -41,5 +43,5 @@ app.post("/events", (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log("Listening on 4000");
+  console.log("Listening on 4000 - v0.2.1");
 });
