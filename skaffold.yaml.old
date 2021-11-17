@@ -1,0 +1,60 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifest:
+      - ./infra/k8s/*
+build:
+  local:
+     push: false
+  artifacts:
+    - image: willycedric/ms-blog
+      context: client
+      docker:
+         dockerfile: Dockerfile
+      sync:
+        manual:
+            - src: 'src/**/*.js'
+              dest: .
+    - image: willycedric/posts-fr
+      context: posts
+      docker:
+         dockerfile: Dockerfile
+      sync:
+        manual:
+            - src: '*.js'
+              dest: .
+    - image: willycedric/comments
+      context: comments
+      docker:
+         dockerfile: Dockerfile
+      sync:
+        manual:
+            - src: '*.js'
+              dest: .
+    - image: willycedric/event-bus
+      context: event-bus
+      docker:
+         dockerfile: Dockerfile
+      sync:
+        manual:
+            - src: '*.js'
+              dest: .
+    - image: willycedric/moderation
+      context: moderation
+      docker:
+         dockerfile: Dockerfile
+      sync:
+        manual:
+            - src: '*.js'
+              dest: .
+
+    - image: willycedric/query
+      context: query
+      docker:
+         dockerfile: Dockerfile
+      sync:
+        manual:
+            - src: '*.js'
+              dest: .
+
